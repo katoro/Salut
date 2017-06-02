@@ -494,10 +494,24 @@ public class Salut implements WifiP2pManager.ConnectionInfoListener {
         manager.addLocalService(channel, serviceInfo, new WifiP2pManager.ActionListener() {
             @Override
             public void onSuccess() {
-                Log.v(TAG, "Successfully added the local service.");
-               if(onSuccess != null)
-                onSuccess.call();
-   
+                manager.createGroup(channel, new WifiP2pManager.ActionListener() {
+                    @Override
+                    public void onSuccess() {
+                        Log.v(TAG, "Successfully created group.");
+                        Log.d(TAG, "Successfully created " + thisDevice.serviceName + " service running on port " + thisDevice.servicePort);
+                        isRunningAsHost = true;
+                        if (onSuccess != null) {
+                            onSuccess.call();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int reason) {
+                        Log.e(TAG, "Failed to create group. Reason :" + reason);
+                        if (onFailure != null)
+                            onFailure.call();
+                    }
+                });
             }
 
             @Override
