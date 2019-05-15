@@ -64,7 +64,7 @@ public class BackgroundClientRegistrationJob implements AsyncJob.OnBackgroundJob
                 Log.d(Salut.TAG, "Registered Host | " + salutInstance.registeredHost.deviceName);
 
                 salutInstance.thisDevice.isRegistered = true;
-                salutInstance.dataReceiver.activity.runOnUiThread(new Runnable() {
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
                         if (onRegistered != null)
@@ -84,7 +84,7 @@ public class BackgroundClientRegistrationJob implements AsyncJob.OnBackgroundJob
 
                 if (onUnregisterSuccess != null) //Success Callback.
                 {
-                    salutInstance.dataReceiver.activity.runOnUiThread(new Runnable() {
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
                         public void run() {
                             onUnregisterSuccess.call();
@@ -103,14 +103,13 @@ public class BackgroundClientRegistrationJob implements AsyncJob.OnBackgroundJob
             ex.printStackTrace();
 
             Log.e(Salut.TAG, "An error occurred while attempting to register or unregister.");
-            salutInstance.dataReceiver.activity.runOnUiThread(new Runnable() {
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
                 @Override
                 public void run() {
                     if (onRegistrationFail != null && !salutInstance.thisDevice.isRegistered) //Prevents both callbacks from being called.
                         onRegistrationFail.call();
                     if (onUnregisterFailure != null)
                         onUnregisterFailure.call();
-
                 }
             });
 

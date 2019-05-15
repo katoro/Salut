@@ -50,12 +50,13 @@ public class BackgroundServerRegistrationJob implements AsyncJob.OnBackgroundJob
                 salutInstance.registeredClients.add(clientDevice);
 
                 if (salutInstance.onDeviceRegisteredWithHost != null) {
-                    salutInstance.dataReceiver.activity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            salutInstance.onDeviceRegisteredWithHost.call(finalDevice);
-                        }
-                    });
+                    new Handler(Looper.getMainLooper()).post(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                salutInstance.onDeviceRegisteredWithHost.call(finalDevice);
+                            }
+                        });
                 }
 
             } else {
@@ -69,12 +70,13 @@ public class BackgroundServerRegistrationJob implements AsyncJob.OnBackgroundJob
                     if (registered.serviceAddress.equals(clientSocket.getInetAddress().toString().replace("/", ""))) {
                         salutInstance.registeredClients.remove(registered);
                         if (salutInstance.onDeviceUnregistered != null) {
-                            salutInstance.dataReceiver.activity.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    salutInstance.onDeviceUnregistered.call(registered);
-                                }
-                            });
+                            new Handler(Looper.getMainLooper()).post(
+                                new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        salutInstance.onDeviceUnregistered.call(registered);
+                                    }
+                                });
                         }
                         Log.d(Salut.TAG, "\nSuccesfully unregistered device.\n");
                     }
