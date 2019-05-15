@@ -13,3 +13,4 @@ public class SalutDataReceiver {
         this.dataCallback = dataCallback;
         this.context = applicationContext;
     }
+}
