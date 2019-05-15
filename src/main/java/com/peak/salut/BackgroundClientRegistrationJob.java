@@ -1,6 +1,8 @@
 package com.peak.salut;
 
 import android.util.Log;
+import android.os.Handler;
+import android.os.Looper;
 
 import com.arasthel.asyncjob.AsyncJob;
 import com.bluelinelabs.logansquare.LoganSquare;
