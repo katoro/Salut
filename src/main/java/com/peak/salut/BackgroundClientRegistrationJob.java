@@ -123,7 +123,7 @@ public class BackgroundClientRegistrationJob implements AsyncJob.OnBackgroundJob
         } finally {
 
             if (disableWiFiOnUnregister) {
-                Salut.disableWiFi(salutInstance.dataReceiver.activity);
+                Salut.disableWiFi(salutInstance.dataReceiver.context);
             }
             try {
                 registrationSocket.close();
